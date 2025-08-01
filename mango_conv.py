@@ -44,6 +44,7 @@ def parse_call_html(html: str) -> tuple[pd.DataFrame, pd.DataFrame]:
 
     header   : dict = {}
     dialogue : list[dict] = []
+    conversation : list[str] = []
 
     for tr in table.find_all("tr"):
         tds = tr.find_all("td")
@@ -66,6 +67,9 @@ def parse_call_html(html: str) -> tuple[pd.DataFrame, pd.DataFrame]:
             header[LABEL_XLAT.get(label_ru, label_ru)] = value
         # ── DIALOGUE ROWS ────────────────────────────────────────────
         elif len(tds) >= 3 and (text.startswith("Сотрудник") or text.startswith("Клиент")):
+            conversation_txt = f"{len(conversation)}. {tds[1].text.strip()}. {text}: {_clean(tds[2])}"
+            conversation.append(conversation_txt)
+            
             dialogue.append({
                 "role_ru": text,
                 "role_en": "client" if text == "Клиент" else "employee",
@@ -76,6 +80,7 @@ def parse_call_html(html: str) -> tuple[pd.DataFrame, pd.DataFrame]:
     # post-processing for header
     if "duration_raw" in header:
         header["duration_seconds"] = _duration_to_seconds(header["duration_raw"])
+        header["converation"] = "\n".join(conversation)
 
     header_df       = pd.DataFrame([header])
     conversation_df = (
@@ -123,8 +128,8 @@ for file_path in html_path.iterdir():
     ]
     cols_dialog = [c for c in merged_df.columns if c not in cols_front]
     merged_df = merged_df[cols_front + cols_dialog]
-    final_df = pd.concat([final_df, merged_df])
+    final_df = pd.concat([final_df, header_df])
     print(f"{file_path} processed.")
 
-csv_path = "data/conversations.csv"
+csv_path = "data/conversations_short.csv"
 final_df.to_csv(csv_path, index=False, encoding="utf-8-sig")
