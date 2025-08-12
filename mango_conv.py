@@ -46,9 +46,7 @@ def _duration_to_seconds(raw: str | None) -> int | None:
     if len(parts) == 2:
         m, s = parts
         return m * 60 + s
-    if len(parts) == 1:
-        return parts[0]
-    return None
+    return parts[0] if len(parts) == 1 else None
 
 
 def _clean(td) -> str:
@@ -165,7 +163,10 @@ def convert_directory(html_dir: Path, csv_output: Path) -> None:
     """
     final_rows: list[pd.DataFrame] = []
     for file_path in html_dir.iterdir():
-        if file_path.name == "index.html" or not file_path.suffix.lower() == ".html":
+        if (
+            file_path.name == "index.html"
+            or file_path.suffix.lower() != ".html"
+        ):
             continue
         with file_path.open("r", encoding="utf-8") as f:
             html = f.read()
