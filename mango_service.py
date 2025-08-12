@@ -80,11 +80,13 @@ def upload() -> Response:
         try:
             html = uploaded_file.read().decode("utf-8")
         except Exception:
-            return Response(f"Failed to read uploaded file {uploaded_file.filename}", status=400)
+            continue
+            #return Response(f"Failed to read uploaded file {uploaded_file.filename}", status=400)
         try:
             header_df, _ = parse_call_html(html)
         except Exception as exc:
-            return Response(f"Failed to parse HTML ({uploaded_file.filename}): {exc}", status=400)
+            continue
+            #return Response(f"Failed to parse HTML ({uploaded_file.filename}): {exc}", status=400)
         header_df["filename"] = uploaded_file.filename
         # Merge conversation and header information so each utterance carries
         # the call metadata. Header values are broadcast across all rows.
