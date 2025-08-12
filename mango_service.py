@@ -109,4 +109,4 @@ def upload() -> Response:
 
 if __name__ == "__main__":
     # Run the Flask development server when executed directly.
-    app.run(host='0.0.0.0', port=5004, debug=False)
+    app.run(host='0.0.0.0', port=5006, debug=False)
