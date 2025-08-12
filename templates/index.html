@@ -16,14 +16,11 @@
 <body>
   <div class="container">
     <h1>Mango Speech Recordings Converter</h1>
-    <p>Select an exported call‑recording HTML file and click convert. A CSV
+    <p>Select one or more exported call‑recording HTML files and click convert. A CSV
     containing the call metadata and individual utterances will be
     downloaded automatically.</p>
     <form action="/upload" method="post" enctype="multipart/form-data">
-      <!-- Allow the user to select and upload multiple HTML files at once.  The
-           ``multiple`` attribute enables multiple selection, and the
-           ``name`` attribute uses the plural ``files`` so that the server
-           can iterate over all uploaded files via ``request.files.getlist('files')``. -->
+      <!-- Allow multiple selection; name must be ``files`` to match the server -->
       <input type="file" name="files" accept=".html" multiple required>
       <button type="submit">Convert to CSV</button>
     </form>

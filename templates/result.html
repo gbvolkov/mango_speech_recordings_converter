@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversion Results</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    .container { max-width: 600px; margin: 0 auto; }
+    h1 { text-align: center; }
+    .summary { margin-top: 1rem; }
+    .summary p { margin: 0.5rem 0; }
+    .actions { margin-top: 2rem; }
+    .actions a { padding: 0.5rem 1rem; background: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Conversion Results</h1>
+    <div class="summary">
+      <p>Processed files: {{ processed_count }}</p>
+      <p>Files with errors: {{ error_count }}</p>
+    </div>
+    {% if errors %}
+      <div class="error-list" style="margin-top: 1rem;">
+        <h2>Files with errors</h2>
+        <ul>
+        {% for err in errors %}
+          <li><strong>{{ err.filename }}</strong>: {{ err.message }}</li>
+        {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    {% if csv_data_uri %}
+      <div class="actions">
+        <a href="{{ csv_data_uri }}" download="conversations.csv">Download CSV</a>
+      </div>
+    {% else %}
+      <p>No valid CSV could be generated from the uploaded files.</p>
+    {% endif %}
+    <div class="actions" style="margin-top:1rem;">
+      <a href="/">Back to upload</a>
+    </div>
+  </div>
+</body>
+</html>
