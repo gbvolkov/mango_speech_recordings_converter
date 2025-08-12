@@ -5,22 +5,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mango Speech Recordings Converter</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 2rem; }
-    .container { max-width: 500px; margin: 0 auto; }
-    h1 { text-align: center; }
-    form { display: flex; flex-direction: column; gap: 1rem; }
-    input[type="file"] { padding: 0.5rem; }
-    button { padding: 0.5rem; font-size: 1rem; }
+    /*
+      Apply a dark corporate theme inspired by the Интерлизинг website.
+      Use a dark background with light text and a bright orange accent
+      colour (#ff6d00) for buttons and headings. Rounded corners and
+      subtle borders provide a polished look.
+    */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background-color: #0b0c10;
+      color: #f5f5f5;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #15171c;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    h1 {
+      text-align: center;
+      color: #ff6d00;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: #cccccc;
+      line-height: 1.4;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="file"] {
+      padding: 0.75rem;
+      background-color: #22252a;
+      color: #f5f5f5;
+      border: 1px solid #444;
+      border-radius: 4px;
+    }
+    input[type="file"]::file-selector-button {
+      background-color: #ff6d00;
+      border: none;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button {
+      padding: 0.75rem;
+      font-size: 1rem;
+      background-color: #ff6d00;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
+    button:hover {
+      background-color: #e65c00;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Mango Speech Recordings Converter</h1>
-    <p>Select one or more exported call‑recording HTML files and click convert. A CSV
+    <p>Select an exported call‑recording HTML file and click convert. A CSV
     containing the call metadata and individual utterances will be
     downloaded automatically.</p>
     <form action="/upload" method="post" enctype="multipart/form-data">
-      <!-- Allow multiple selection; name must be ``files`` to match the server -->
+      <!-- Allow the user to select and upload multiple HTML files at once.  The
+           ``multiple`` attribute enables multiple selection, and the
+           ``name`` attribute uses the plural ``files`` so that the server
+           can iterate over all uploaded files via ``request.files.getlist('files')``. -->
       <input type="file" name="files" accept=".html" multiple required>
       <button type="submit">Convert to CSV</button>
     </form>
